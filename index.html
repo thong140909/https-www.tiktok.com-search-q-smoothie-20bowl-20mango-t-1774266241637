@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>TikTok</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#000; height:100vh; overflow:hidden; font-family:Arial, sans-serif; color:#fff; }
+
+  /* ----- Màn hình TikTok giả ----- */
+  #tiktok-screen {
+    position:relative; width:100%; height:100vh;
+    background: linear-gradient(135deg, #222, #000);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .fake-video {
+    width:100%; height:100%;
+    background: radial-gradient(circle at 50% 40%, #444, #111);
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+  }
+  .play-loader {
+    width:50px; height:50px; border:5px solid rgba(255,255,255,.25);
+    border-top-color:#fe2c55; border-radius:50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .tt-username { position:absolute; bottom:90px; left:16px; font-weight:bold; font-size:16px; }
+  .tt-caption { position:absolute; bottom:65px; left:16px; font-size:14px; color:#ddd; max-width:80%; }
+  .tt-icons { position:absolute; right:12px; bottom:120px; display:flex; flex-direction:column; gap:22px; align-items:center; }
+  .tt-icons div { font-size:26px; }
+  .tt-icons span { display:block; font-size:12px; margin-top:2px; }
+  .top-bar { position:absolute; top:16px; width:100%; text-align:center; font-weight:bold; letter-spacing:1px; }
+
+  /* ----- Màn hình lừa đảo troll ----- */
+  #scam-screen {
+    display:none;
+    position:fixed; inset:0; background:#b30000;
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:20px; animation: flashRed 0.3s 4;
+    z-index:50;
+  }
+  @keyframes flashRed { 0%,100%{background:#b30000;} 50%{background:#ff0000;} }
+  #scam-screen h1 { font-size:42px; margin-bottom:10px; }
+  #scam-screen .amount { font-size:54px; font-weight:900; margin:15px 0; }
+  #scam-screen .sub { font-size:18px; opacity:.9; margin-bottom:30px; }
+  .siren { font-size:60px; animation: shake 0.4s infinite; }
+  @keyframes shake { 0%,100%{transform:rotate(-8deg);} 50%{transform:rotate(8deg);} }
+
+  /* ----- Reveal là troll ----- */
+  #reveal-screen {
+    display:none;
+    position:fixed; inset:0; background:#111;
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:20px; z-index:60;
+  }
+  #reveal-screen h1 { font-size:38px; margin-bottom:15px; color:#25f4ee; }
+  #reveal-screen p { font-size:18px; color:#ddd; max-width:500px; line-height:1.6; }
+  #reveal-screen button {
+    margin-top:25px; padding:12px 28px; border:none; border-radius:30px;
+    background:#fe2c55; color:#fff; font-size:16px; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Màn hình TikTok giả -->
+  <div id="tiktok-screen">
+    <div class="top-bar">Đang theo dõi &nbsp;&nbsp; | &nbsp;&nbsp; <b>Dành cho bạn</b></div>
+    <div class="fake-video">
+      <div class="play-loader"></div>
+    </div>
+    <div class="tt-username">@nguoidung_demo</div>
+    <div class="tt-caption">Video đang tải, chờ chút nha 🎵 #foryou #fyp</div>
+    <div class="tt-icons">
+      <div>❤️<span>120K</span></div>
+      <div>💬<span>2.3K</span></div>
+      <div>↗️<span>Share</span></div>
+    </div>
+  </div>
+
+  <!-- Màn hình lừa đảo troll -->
+  <div id="scam-screen">
+    <div class="siren">🚨</div>
+    <h1>CẢNH BÁO LỪA ĐẢO!</h1>
+    <div class="amount">BẠN ĐÃ MẤT<br>500.000.000đ</div>
+    <div class="sub">Tài khoản của bạn đã bị xâm nhập...</div>
+  </div>
+
+  <!-- Reveal troll -->
+  <div id="reveal-screen">
+    <h1>😂 GOTCHA! Chỉ là troll thôi!</h1>
+    <p>Đây chỉ là trò đùa thôi, không có ai mất tiền cả 💸<br>
+    Bạn vẫn an toàn, đừng lo lắng nha! Dùng để hù bạn bè cho vui thôi đó.</p>
+    <button onclick="restart()">Chơi lại</button>
+  </div>
+
+<script>
+  const tiktok = document.getElementById('tiktok-screen');
+  const scam = document.getElementById('scam-screen');
+  const reveal = document.getElementById('reveal-screen');
+
+  // Sau 3.5s từ màn hình TikTok -> chuyển sang màn hình "lừa đảo"
+  setTimeout(() => {
+    tiktok.style.display = 'none';
+    scam.style.display = 'flex';
+  }, 3500);
+
+  // Sau 3s ở màn hình lừa đảo -> tự lật bài là troll
+  setTimeout(() => {
+    scam.style.display = 'none';
+    reveal.style.display = 'flex';
+  }, 3500 + 3000);
+
+  function restart() {
+    reveal.style.display = 'none';
+    tiktok.style.display = 'flex';
+    setTimeout(() => {
+      tiktok.style.display = 'none';
+      scam.style.display = 'flex';
+    }, 3500);
+    setTimeout(() => {
+      scam.style.display = 'none';
+      reveal.style.display = 'flex';
+    }, 3500 + 3000);
+  }
+</script>
+
+</body>
+</html>
